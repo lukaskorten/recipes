@@ -1,15 +1,16 @@
 <script>
   import { flip } from "svelte/animate";
   import { slide } from "svelte/transition";
+  import { createEventDispatcher } from "svelte";
   import Ingredient from "./Ingredient.svelte";
   import Button from "../ui/Button.svelte";
   import IconButton from "../ui/IconButton.svelte";
   import IngredientInput from "./IngredientInput.svelte";
 
-  export let recipe;
+  export let title;
+  export let ingredients;
 
-  let { title, ingredients } = recipe;
-
+  const dispatch = createEventDispatcher();
   let isInputVisible = false;
 
   function showInput() {
@@ -31,6 +32,10 @@
     ingredients = ingredients.filter(
       ingredient => ingredient.description !== ingredientName
     );
+  }
+
+  function toShoppingList() {
+    dispatch("toshoppinglist", { title, ingredients });
   }
 </script>
 
@@ -101,6 +106,6 @@
   </div>
 
   <div class="footer">
-    <Button>Auf die Einkaufsliste</Button>
+    <Button on:click={toShoppingList}>Auf die Einkaufsliste</Button>
   </div>
 </div>
