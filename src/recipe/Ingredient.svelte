@@ -38,7 +38,7 @@
   <span class="ingredient">{amount} {unit} {description}</span>
   <span class="buttons">
     <IconButton
-      type="trash"
+      icon="trash"
       mode="warning"
       title="{description} entfernen"
       on:click={remove} />
