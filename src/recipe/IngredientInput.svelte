@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import IconButton from "../ui/IconButton.svelte";
 
   let description;
   let amount;
@@ -8,9 +9,13 @@
   const dispatch = createEventDispatcher();
 
   function save() {
-    console.log("Form wurde submitted!");
-    const ingredient = { description, amount, unit };
+    const selectedAmount = amount ? amount : 1;
+    const ingredient = { description, amount: selectedAmount, unit };
     dispatch("save", ingredient);
+  }
+
+  function cancel() {
+    dispatch("cancel");
   }
 </script>
 
@@ -18,18 +23,24 @@
   form {
     margin: 0;
   }
-  input[type="submit"] {
-    display: none;
-  }
 
   section {
     background: #ffffff;
     box-shadow: 0 3px 8px -3px rgba(0, 0, 0, 0.15);
     border-radius: 0.5rem;
     padding: 1rem;
+    margin: 0 -1rem;
+  }
+
+  .content {
     display: flex;
     justify-content: space-between;
-    margin: 0 -1rem 1rem;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
   }
 
   input,
@@ -61,22 +72,35 @@
     width: 5rem;
     margin-left: 0.5rem;
   }
+
+  [disabled] {
+    opacity: 0.5;
+  }
 </style>
 
 <form on:submit|preventDefault={save}>
   <section>
-    <input
-      bind:value={description}
-      class="description"
-      type="text"
-      placeholder="Was fehlt noch?" />
-    <input bind:value={amount} class="amount" type="number" placeholder="100" />
-    <select bind:value={unit}>
-      <option value="g">g</option>
-      <option value="ml">ml</option>
-      <option value="TL">TL</option>
-      <option value="Stck">Stck</option>
-    </select>
+    <div class="content">
+      <input
+        bind:value={description}
+        class="description"
+        type="text"
+        placeholder="Was fehlt noch?" />
+      <input
+        bind:value={amount}
+        class="amount"
+        type="number"
+        placeholder="100" />
+      <select bind:value={unit}>
+        <option value="" disabled selected>Stück</option>
+        <option value="g">g</option>
+        <option value="ml">ml</option>
+        <option value="TL">TL</option>
+      </select>
+    </div>
+    <div class="footer">
+      <IconButton type="reset" on:click={cancel}>Abbrechen</IconButton>
+      <IconButton type="submit" mode="primary">Hinzufügen</IconButton>
+    </div>
   </section>
-  <input type="submit" />
 </form>

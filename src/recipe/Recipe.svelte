@@ -1,4 +1,7 @@
 <script>
+  import { flip } from "svelte/animate";
+  import { slide } from "svelte/transition";
+
   import Ingredient from "./Ingredient.svelte";
   import Button from "../ui/Button.svelte";
   import IconButton from "../ui/IconButton.svelte";
@@ -15,14 +18,23 @@
     { amount: 2, unit: "EL", description: "Öl" }
   ];
 
+  let isInputVisible = false;
+
+  function showInput() {
+    isInputVisible = true;
+  }
+
+  function hideInput() {
+    isInputVisible = false;
+  }
+
   function addIngredient(e) {
-    console.log(e);
     const ingredient = { ...e.detail };
     ingredients = [...ingredients, ingredient];
+    hideInput();
   }
 
   function removeIngredient(e) {
-    console.log(e);
     const ingredientName = e.detail;
     ingredients = ingredients.filter(
       ingredient => ingredient.description !== ingredientName
@@ -55,6 +67,10 @@
     padding: 0;
   }
 
+  .ingredient-input-container {
+    margin: 0 0 1rem;
+  }
+
   .ingredients-footer {
     display: flex;
     justify-content: center;
@@ -72,16 +88,25 @@
 <div class="recipe">
   <h2>American Pancakes</h2>
   <ul>
-    {#each ingredients as ingredient}
-      <li>
+    {#each ingredients as ingredient (ingredient)}
+      <li animate:flip={{ duration: 250 }}>
         <Ingredient {...ingredient} on:remove={removeIngredient} />
       </li>
     {/each}
   </ul>
-  <IngredientInput on:save={addIngredient} />
+
+  {#if isInputVisible}
+    <div
+      class="ingredient-input-container"
+      transition:slide={{ duration: 250 }}>
+      <IngredientInput on:save={addIngredient} on:cancel={hideInput} />
+    </div>
+  {/if}
+
   <div class="ingredients-footer">
-    <IconButton>Zutat hinzufügen</IconButton>
+    <IconButton on:click={showInput}>Zutat hinzufügen</IconButton>
   </div>
+
   <div class="footer">
     <Button>Auf die Einkaufsliste</Button>
   </div>
