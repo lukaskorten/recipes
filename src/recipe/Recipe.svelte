@@ -1,7 +1,6 @@
 <script>
   import { flip } from "svelte/animate";
   import { slide } from "svelte/transition";
-
   import Ingredient from "./Ingredient.svelte";
   import Button from "../ui/Button.svelte";
   import IconButton from "../ui/IconButton.svelte";
@@ -42,6 +41,7 @@
     padding: 1rem 2rem;
     box-shadow: 0 15px 25px -10px rgba(0, 0, 0, 0.15);
     background: #fefefe;
+    margin: 0 0 1rem;
   }
 
   h2 {
@@ -79,7 +79,7 @@
 </style>
 
 <div class="recipe">
-  <h2>American Pancakes</h2>
+  <h2>{title}</h2>
   <ul>
     {#each ingredients as ingredient (ingredient)}
       <li animate:flip={{ duration: 250 }}>

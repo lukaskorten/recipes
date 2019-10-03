@@ -2,8 +2,8 @@
   import IconButton from "../ui/IconButton.svelte";
   import { createEventDispatcher } from "svelte";
 
-  export let amount;
-  export let unit = "";
+  export let amount = null;
+  export let unit = null;
   export let description;
 
   const dispatch = createEventDispatcher();
@@ -24,6 +24,10 @@
     padding: 0.4rem 0;
   }
 
+  .amount {
+    color: #b5b2aa;
+  }
+
   .buttons {
     opacity: 0.1;
     transition: opacity ease 250ms;
@@ -35,7 +39,13 @@
 </style>
 
 <div>
-  <span class="ingredient">{amount} {unit} {description}</span>
+  <span class="ingredient">
+    <span class="amount">
+      {#if amount}{amount}{/if}
+      {#if unit}{unit}{/if}
+    </span>
+    {description}
+  </span>
   <span class="buttons">
     <IconButton
       icon="trash"
