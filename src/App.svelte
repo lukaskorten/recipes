@@ -13,7 +13,12 @@
   }
   function addToShoppingList(e) {
     const ingredients = e.detail.ingredients;
-    shoppingList = [...shoppingList, ...ingredients];
+    const products = ingredients.map(ingredient => ingredient.description);
+    shoppingList = [...shoppingList, ...products].filter(
+      (value, index, self) => {
+        return self.indexOf(value) === index;
+      }
+    );
   }
 </script>
 
@@ -24,29 +29,36 @@
     justify-content: center;
     align-items: center;
     background: #f9f9f9;
+    border-bottom: 3px solid #fefefe;
     color: #00695c;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
   }
 
   main {
-    margin-top: 4rem;
+    margin-top: 2rem;
   }
 
   .container {
-    max-width: 90rem;
+    width: 85rem;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
   }
 
-  .col:nth-of-type(1) {
-    max-width: 25rem;
+  .card {
+    background: rgba(255, 255, 255, 0.4);
+    padding: 1rem 2rem;
+    border-radius: 0.5rem;
   }
-  .col:nth-of-type(2) {
+
+  .recipe-list {
+    width: 20rem;
+  }
+  .recipe-details {
     width: 29rem;
   }
-  .col:nth-of-type(3) {
-    max-width: 25rem;
+  .shopping-list {
+    width: 20rem;
   }
 
   h2 {
@@ -70,8 +82,11 @@
 
 <main>
   <div class="container">
-    <div class="col">
-      <h2>Rezept auswählen...</h2>
+    <div class="card recipe-list">
+      <h2>
+        <i class="fas fa-cookie-bite" />
+        Rezept auswählen...
+      </h2>
       <ul>
         {#each recipes as recipe}
           <li>
@@ -80,16 +95,22 @@
         {/each}
       </ul>
     </div>
-    <div class="col">
-      <h2>Zutaten prüfen/ ändern ...</h2>
+    <div class="card recipe-details">
+      <h2>
+        <i class="fas fa-search" />
+        Zutaten prüfen/ ändern ...
+      </h2>
       {#if selectedRecipe}
         <Recipe {...selectedRecipe} on:toshoppinglist={addToShoppingList} />
       {:else}
-        <Hint icon="file-alt">Bitte wähle ein Rezept aus</Hint>
+        <Hint icon="file-alt">Such dir ein Rezept aus</Hint>
       {/if}
     </div>
-    <div class="col">
-      <h2>Einkaufsliste</h2>
+    <div class="card shopping-list">
+      <h2>
+        <i class="fas fa-shopping-cart" />
+        Einkaufsliste
+      </h2>
       <ShoppingList products={shoppingList} />
     </div>
   </div>

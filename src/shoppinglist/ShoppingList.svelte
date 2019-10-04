@@ -16,12 +16,10 @@
   <ul>
     {#each products as product}
       <li>
-        <Product title={product.description} />
+        <Product title={product} />
       </li>
     {/each}
   </ul>
 {:else}
-  <Hint icon="pepper-hot">
-    Leer hier. Füge deiner Einkaufsliste ein Paar Lebensmittel hinzu
-  </Hint>
+  <Hint icon="pepper-hot">Ziemlich leer hier</Hint>
 {/if}
